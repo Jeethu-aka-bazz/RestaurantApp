@@ -12,6 +12,14 @@ import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
+// https://the-fork-the-spoon.p.rapidapi.com/restaurants/v2/auto-complete?
+// headers: {
+//     'X-RapidAPI-Key': '6f31118797msh5440041c30c0701p1e6a11jsn2e608fb72102',
+//     'X-RapidAPI-Host': 'the-fork-the-spoon.p.rapidapi.com'
+//   }
+
+// https://the-fork-the-spoon.p.rapidapi.com/restaurants/v2/list
+
 const SearchBar = () => {
   return (
     <View style={{marginTop: 15, flexDirection: 'row'}}>

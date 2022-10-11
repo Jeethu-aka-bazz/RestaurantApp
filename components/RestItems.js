@@ -11,11 +11,11 @@ const RestItems = ({restData}) => {
         padding: 10,
         backgroundColor: '#fff',
       }}>
-      <RestImage source={restData.img} />
+      <RestImage source={restData.mainPhotoSrc} />
       <RestInfo
         name={restData.name}
-        deliveryTime={restData.deliveryTime}
-        rating={restData.rating}
+        deliveryTime={`${restData?.address?.street}, ${restData?.address?.locality}, ${restData?.address?.country}`}
+        rating={restData?.aggregateRatings?.tripadvisor?.ratingValue}
       />
     </View>
   );
@@ -23,13 +23,14 @@ const RestItems = ({restData}) => {
 
 const RestInfo = ({name, deliveryTime, rating}) => {
   return (
-    <View style={Styles.infobox}>
+    <View style={[Styles.rowbox, Styles.infobox]}>
       <View>
         <Text style={Styles.restname}>{name}</Text>
         <Text>{deliveryTime}</Text>
       </View>
-      <View style={Styles.rating}>
-        <Text>{rating}</Text>
+      <View style={[Styles.rowbox, Styles.rating, {flexDirection: 'row'}]}>
+        <Text style={{marginRight: 4}}>{rating}</Text>
+        <Ionicons name="star-sharp" size={20} />
       </View>
     </View>
   );
@@ -57,10 +58,13 @@ const RestImage = ({source}) => {
 };
 
 const Styles = StyleSheet.create({
-  infobox: {
-    marginTop: 13,
+  rowbox: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+
+  infobox: {
+    marginTop: 13,
     justifyContent: 'space-between',
   },
   restname: {
@@ -69,8 +73,7 @@ const Styles = StyleSheet.create({
     fontWeight: '700',
   },
   rating: {
-    backgroundColor: '#ddd',
-    padding: 8,
+    padding: 3,
     borderRadius: 30,
   },
 });

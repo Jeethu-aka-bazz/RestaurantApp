@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -12,7 +13,7 @@ import SearchBar from '../components/SearchBar';
 import HeaderTab from '../components/HeaderTab';
 import RestItems from '../components/RestItems';
 
-const restDatas = [
+const restDatas1 = [
   {
     img: 'https://assets.gqindia.com/photos/62a9d4653e8cdc9b632eb2ad/master/pass/10%20restaurants%20in%20Mumbai%20that%20offer%20the%20best%20sunset%20views.jpg',
     name: 'resturant1',
@@ -34,6 +35,30 @@ const restDatas = [
 ];
 
 const Home = ({navigation}) => {
+  const [restaurants, setRestaurants] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const apiLink =
+        'https://the-fork-the-spoon.p.rapidapi.com/restaurants/v2/list';
+      const options = {
+        method: 'GET',
+        headers: {
+          'X-RapidAPI-Key':
+            '6f31118797msh5440041c30c0701p1e6a11jsn2e608fb72102',
+          'X-RapidAPI-Host': 'the-fork-the-spoon.p.rapidapi.com',
+        },
+      };
+      await fetch(
+        apiLink + '?queryPlaceValueCityId=348156&pageSize=2&pageNumber=1',
+        options,
+      )
+        .then(response => response.json())
+        .then(({data}) => {
+          setRestaurants(data);
+        });
+    })();
+  }, []);
   return (
     <SafeAreaView style={{backgroundColor: '#eee', flex: 1}}>
       <View style={{backgroundColor: '#fff', padding: 15}}>
@@ -41,7 +66,7 @@ const Home = ({navigation}) => {
         <SearchBar />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {restDatas.map(restData => (
+        {restaurants.map(restData => (
           <RestItems restData={restData} />
         ))}
       </ScrollView>
