@@ -3,33 +3,45 @@ import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const RestItems = ({restData}) => {
+const RestItems = ({navigation, restaurants, theme}) => {
   return (
-    <View
-      style={{
-        marginTop: 10,
-        padding: 10,
-        backgroundColor: '#fff',
-      }}>
-      <RestImage source={restData.mainPhotoSrc} />
-      <RestInfo
-        name={restData.name}
-        deliveryTime={`${restData?.address?.street}, ${restData?.address?.locality}, ${restData?.address?.country}`}
-        rating={restData?.aggregateRatings?.tripadvisor?.ratingValue}
-      />
-    </View>
+    <>
+      {restaurants.map(restData => (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Info');
+          }}
+          style={{
+            marginTop: 10,
+            padding: 10,
+            backgroundColor: theme.cardbackground,
+          }}>
+          <RestImage source={restData.mainPhotoSrc} />
+          <RestInfo
+            name={restData.name}
+            location={`${restData?.address?.street}, ${restData?.address?.locality}, ${restData?.address?.country}`}
+            rating={restData?.aggregateRatings?.tripadvisor?.ratingValue}
+            theme={theme}
+          />
+        </TouchableOpacity>
+      ))}
+    </>
   );
 };
 
-const RestInfo = ({name, deliveryTime, rating}) => {
+const RestInfo = ({name, location, rating, theme}) => {
   return (
     <View style={[Styles.rowbox, Styles.infobox]}>
       <View>
-        <Text style={Styles.restname}>{name}</Text>
-        <Text>{deliveryTime}</Text>
+        <Text style={[{color: theme.cardheadercolor}, Styles.restname]}>
+          {name}
+        </Text>
+        <Text style={{color: theme.cardsubheadercolor}}>{location}</Text>
       </View>
       <View style={[Styles.rowbox, Styles.rating, {flexDirection: 'row'}]}>
-        <Text style={{marginRight: 4}}>{rating}</Text>
+        <Text style={{marginRight: 4, color: theme.cardsubheadercolor}}>
+          {rating}
+        </Text>
         <Ionicons name="star-sharp" size={20} />
       </View>
     </View>
@@ -68,7 +80,6 @@ const Styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   restname: {
-    color: '#000',
     fontSize: 18,
     fontWeight: '700',
   },

@@ -1,33 +1,48 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput,
-  SafeAreaView,
-} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {darktheme, lighttheme} from '../themes';
 
-const HeadButton = ({title, active, setActive}) => {
+const HeadButton = ({title, active, setActive, theme, setTheme}) => {
+  const inActiveButtonStyles = {
+    color: theme.cardsubheadercolor,
+  };
+
   return (
     <TouchableOpacity
       onPress={() => {
         setActive(title);
+        title === 'Dark' ? setTheme(darktheme) : setTheme(lighttheme);
       }}>
       <Text
-        style={[styles.HeadButtonText, active === title && styles.activeStyle]}>
+        style={[
+          active === title ? styles.activeStyle : inActiveButtonStyles,
+          styles.HeadButtonText,
+        ]}>
         {title}
       </Text>
     </TouchableOpacity>
   );
 };
 
-const HeaderTab = () => {
-  const [active, setActive] = useState('Delivery');
+const HeaderTab = ({theme, setTheme}) => {
+  const [active, setActive] = useState('Dark');
   return (
     <View style={[styles.rowStyle, {marginTop: 10, alignSelf: 'center'}]}>
-      <HeadButton title="Delivery" active={active} setActive={setActive} />
-      <HeadButton title="Pickup" active={active} setActive={setActive} />
+      <HeadButton
+        title="Dark"
+        active={active}
+        setActive={setActive}
+        theme={theme}
+        setTheme={setTheme}
+      />
+      <HeadButton
+        title="Light"
+        active={active}
+        setActive={setActive}
+        theme={theme}
+        setTheme={setTheme}
+      />
     </View>
   );
 };
@@ -47,9 +62,6 @@ const styles = StyleSheet.create({
   activeStyle: {
     backgroundColor: '#000',
     color: '#fff',
-  },
-  searchBox: {
-    backgroundColor: '#000',
   },
 });
 
