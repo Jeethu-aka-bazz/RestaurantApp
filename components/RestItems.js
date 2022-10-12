@@ -9,7 +9,7 @@ const RestItems = ({navigation, restaurants, theme}) => {
       {restaurants.map(restData => (
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Info');
+            navigation.navigate('Info', {restData});
           }}
           style={{
             marginTop: 10,

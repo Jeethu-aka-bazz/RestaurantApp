@@ -13,11 +13,13 @@ const SearchBar = ({theme}) => {
         styles={{
           textInput: {
             backgroundColor: theme.searchbarbackground,
+            color: theme.searchbartextcolor,
             borderRadius: 50,
             marginTop: 3,
           },
           textInputContainer: {
             backgroundColor: theme.searchbarbackground,
+            color: theme.searchbartextcolor,
             borderRadius: 50,
             alignItems: 'center',
           },
@@ -40,7 +42,7 @@ const SearchBar = ({theme}) => {
               style={[
                 styles.rightbuttontextstyles,
                 {
-                  color: theme.cardheadercolor,
+                  color: theme.searchbartextcolor,
                 },
               ]}>
               Search
