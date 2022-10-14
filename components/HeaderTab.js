@@ -2,28 +2,7 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {darktheme, lighttheme} from '../themes';
-
-const HeadButton = ({title, active, setActive, theme, setTheme}) => {
-  const inActiveButtonStyles = {
-    color: theme.cardsubheadercolor,
-  };
-
-  return (
-    <TouchableOpacity
-      onPress={() => {
-        setActive(title);
-        title === 'Dark' ? setTheme(darktheme) : setTheme(lighttheme);
-      }}>
-      <Text
-        style={[
-          active === title ? styles.activeStyle : inActiveButtonStyles,
-          styles.HeadButtonText,
-        ]}>
-        {title}
-      </Text>
-    </TouchableOpacity>
-  );
-};
+import store from '../store';
 
 const HeaderTab = ({theme, setTheme}) => {
   const [active, setActive] = useState('Dark');
@@ -47,6 +26,39 @@ const HeaderTab = ({theme, setTheme}) => {
   );
 };
 
+const HeadButton = ({title, active, setActive, theme, setTheme}) => {
+  const inActiveButtonStyles = {
+    color: theme.cardsubheadercolor,
+  };
+
+  const changeDark = () => {
+    store.dispatch({type: 'changeDarkTheme'});
+    setTheme(store.getState());
+  };
+
+  const changeLight = () => {
+    store.dispatch({type: 'changeLightTheme'});
+    setTheme(store.getState());
+  };
+
+  const changeTheme = () => {
+    setActive(title);
+    title === 'Dark' ? changeDark() : changeLight();
+  };
+
+  return (
+    <TouchableOpacity onPress={changeTheme} style={{borderRadius: 30}}>
+      <Text
+        style={[
+          active === title ? styles.activeStyle : inActiveButtonStyles,
+          styles.HeadButtonText,
+        ]}>
+        {title}
+      </Text>
+    </TouchableOpacity>
+  );
+};
+
 const styles = StyleSheet.create({
   HeadButtonText: {
     fontSize: 15,
@@ -62,6 +74,7 @@ const styles = StyleSheet.create({
   activeStyle: {
     backgroundColor: '#000',
     color: '#fff',
+    borderRadius: 50,
   },
 });
 

@@ -2,8 +2,10 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import store from '../store';
 
 const InfoImg = ({photosource, navigation}) => {
+  const theme = store.getState();
   return (
     <View style={styles.imgbox}>
       <TouchableOpacity
@@ -11,7 +13,9 @@ const InfoImg = ({photosource, navigation}) => {
         onPress={() => {
           navigation.goBack();
         }}>
-        <Text style={{fontSize: 16}}>goBack</Text>
+        <Text style={{fontSize: 16, color: theme.cardsubheadercolor}}>
+          goBack
+        </Text>
       </TouchableOpacity>
       <Image
         source={{

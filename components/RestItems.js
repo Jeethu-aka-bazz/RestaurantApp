@@ -16,11 +16,11 @@ const RestItems = ({navigation, restaurants, theme}) => {
             padding: 10,
             backgroundColor: theme.cardbackground,
           }}>
-          <RestImage source={restData.mainPhotoSrc} />
+          <RestImage source={restData?.photo?.images?.original?.url} />
           <RestInfo
-            name={restData.name}
-            location={`${restData?.address?.street}, ${restData?.address?.locality}, ${restData?.address?.country}`}
-            rating={restData?.aggregateRatings?.tripadvisor?.ratingValue}
+            name={restData?.name}
+            location={`${restData?.address_obj?.street1}, ${restData?.address_obj?.city}`}
+            rating={restData?.raw_ranking.slice(0, 3)}
             theme={theme}
           />
         </TouchableOpacity>

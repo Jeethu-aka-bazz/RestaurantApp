@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import store from '../store';
 
 const InfoContent = ({
   restaurantname,
@@ -10,13 +11,17 @@ const InfoContent = ({
   price,
   currency,
 }) => {
+  const theme = store.getState();
   return (
-    <View style={{backgroundColor: '#fff', padding: 15}}>
-      <Text style={styles.header}>{restaurantname}</Text>
-      <Text style={styles.contenttext}>{cuisine}</Text>
-      <ContactText address={address} ratings={ratings} />
-      <Price price={price} currency={currency} />
-      {/* <Menu /> */}
+    <View style={{backgroundColor: theme.cardbackground, padding: 15}}>
+      <Text style={[styles.header, {color: theme.cardheadercolor}]}>
+        {restaurantname}
+      </Text>
+      <Text style={[styles.contenttext, {color: theme.cardsubheadercolor}]}>
+        {cuisine.map(e => e.name + ', ')}
+      </Text>
+      <ContactText address={address} ratings={ratings} theme={theme} />
+      <Price theme={theme} price={price} currency={currency} />
     </View>
   );
 };
@@ -25,20 +30,24 @@ const Menu = () => {
   return <Text style={styles.header}>Menu</Text>;
 };
 
-const Price = ({price, currency}) => {
+const Price = ({price, theme}) => {
   return (
-    <Text style={styles.price}>{`${currency} ${price} for per Head`}</Text>
+    <Text
+      style={[
+        styles.price,
+        {color: theme.cardsubheadercolor},
+      ]}>{`${price} for per Head`}</Text>
   );
 };
 
-const ContactText = ({address, ratings}) => {
+const ContactText = ({address, ratings, theme}) => {
   return (
     <View style={styles.contactBox}>
-      <Text style={styles.contenttext}>
-        {`\n${address.street}\n${address.locality}\n${address.country}.`}
+      <Text style={[styles.contenttext, {color: theme.cardsubheadercolor}]}>
+        {`\n${address?.street1}\n${address?.city}\n${address?.country}.`}
       </Text>
-      <Text style={styles.rating}>
-        {`${ratings.thefork.ratingValue} Stars\n${ratings.thefork.reviewCount} Ratings`}
+      <Text style={[styles.rating, {color: theme.cardsubheadercolor}]}>
+        {`${ratings.slice(0, 3)} Stars`}
       </Text>
     </View>
   );
@@ -48,7 +57,6 @@ const styles = StyleSheet.create({
   header: {
     fontWeight: '700',
     fontSize: 40,
-    color: '#000',
   },
   contactBox: {
     flexDirection: 'row',
@@ -57,7 +65,6 @@ const styles = StyleSheet.create({
   contenttext: {
     fontSize: 17,
     fontWeight: '600',
-    color: '#777',
   },
   rating: {
     fontWeight: '600',
