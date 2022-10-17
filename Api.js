@@ -4,8 +4,8 @@ const RESTAURANT_API = 'https://worldwide-restaurants.p.rapidapi.com/search';
 const API_KEY = '6f31118797msh5440041c30c0701p1e6a11jsn2e608fb72102';
 const HOST_NAME = 'worldwide-restaurants.p.rapidapi.com';
 
-const callCitySearchApi = (apiLink, options) => {
-  return fetch(apiLink, options)
+const callCitySearchApi = options => {
+  return fetch(SEARCH_API, options)
     .then(res => {
       return res.json();
     })
@@ -14,8 +14,8 @@ const callCitySearchApi = (apiLink, options) => {
     });
 };
 
-const callRestaurantApi = (apiLink, options) => {
-  return fetch(apiLink, options)
+const callRestaurantApi = options => {
+  return fetch(RESTAURANT_API, options)
     .then(res => {
       return res.json();
     })
@@ -24,11 +24,4 @@ const callRestaurantApi = (apiLink, options) => {
     });
 };
 
-export {
-  SEARCH_API,
-  RESTAURANT_API,
-  API_KEY,
-  HOST_NAME,
-  callCitySearchApi,
-  callRestaurantApi,
-};
+export {API_KEY, HOST_NAME, callCitySearchApi, callRestaurantApi};

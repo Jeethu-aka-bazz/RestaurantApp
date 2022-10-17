@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView, ScrollView} from 'react-native';
 import HeaderTab from '../components/HeaderTab';
 import InfoContent from '../components/InfoContent';
@@ -24,6 +24,8 @@ const Info = ({navigation, route}) => {
     {name: 'shrimp gravy', perprice: 180, currency: 'INR', rating: 4.1},
   ];
 
+  const [addedItems, setAddedItems] = useState([]);
+
   return (
     <SafeAreaView style={{backgroundColor: theme.pagebackground, flex: 1}}>
       <InfoImg
@@ -39,6 +41,8 @@ const Info = ({navigation, route}) => {
           price={restData?.price}
           currency={restData?.currenciesAccepted}
           menuitems={menuitems}
+          addedItems={addedItems}
+          setAddedItems={setAddedItems}
         />
       </ScrollView>
     </SafeAreaView>

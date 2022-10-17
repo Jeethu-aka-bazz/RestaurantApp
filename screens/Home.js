@@ -30,7 +30,6 @@ const Home = ({navigation}) => {
 
   useEffect(() => {
     (async () => {
-      const apiLink = API.SEARCH_API;
       const options = {
         method: 'POST',
         headers: {
@@ -44,12 +43,11 @@ const Home = ({navigation}) => {
           language: 'en_US',
         }),
       };
-      //  setCityList(await API.callCitySearchApi(apiLink, options).data);
+      //  setCityList(await API.callCitySearchApi(options).data);
     })();
   }, [cityname]);
 
   const restaurantApiCall = async () => {
-    const apiLink = API.RESTAURANT_API;
     const options = {
       method: 'POST',
       headers: {
@@ -63,7 +61,7 @@ const Home = ({navigation}) => {
         location_id: selectedCity.location_id,
       }),
     };
-    // setRestaurants(await API.callRestaurantApi(apiLink, options).data);
+    // setRestaurants(await API.callRestaurantApi(options).data);
   };
 
   return (

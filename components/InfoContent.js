@@ -1,5 +1,6 @@
+/* eslint-disable no-shadow */
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import store from '../store/store';
 
@@ -11,6 +12,8 @@ const InfoContent = ({
   price,
   currency,
   menuitems,
+  addedItems,
+  setAddedItems,
 }) => {
   const theme = store.getState().theme;
   return (
@@ -23,49 +26,72 @@ const InfoContent = ({
       </Text>
       <ContactText address={address} ratings={ratings} theme={theme} />
       <Price theme={theme} price={price} currency={currency} />
-      <Menu theme={theme} menuitems={menuitems} />
+      <Menu
+        theme={theme}
+        menuitems={menuitems}
+        addedItems={addedItems}
+        setAddedItems={setAddedItems}
+      />
     </View>
   );
 };
 
-const MenuItems = ({menuitems, theme}) => {
+const MenuItems = ({menuitem, theme, addedItems, setAddedItems}) => {
   const addItemToCart = menuitem => {
-    store.dispatch({type: 'addItem', payload: {...menuitem, quantity: 1}});
+    const indexOfRepeateditem = addedItems.findIndex(
+      addeditem => addeditem.name === menuitem.name,
+    );
+
+    const updateItem = () => {
+      store.dispatch({
+        type: 'updateItem',
+        indexOfRepeateditem: indexOfRepeateditem,
+      });
+    };
+
+    const addItem = () => {
+      store.dispatch({
+        type: 'addItem',
+        payload: {...menuitem, quantity: 1},
+      });
+    };
+
+    indexOfRepeateditem > -1 ? updateItem() : addItem();
+
+    setAddedItems(store.getState().cartitems);
+    console.log('menuitem', addedItems, indexOfRepeateditem);
   };
 
   return (
-    <View style={styles.menuBox}>
-      {menuitems?.map(menuitem => (
-        <View
-          style={[
-            styles.rowbox,
-            styles.menuitem,
-            {backgroundColor: theme.menubackground},
-          ]}>
+    <View
+      style={[
+        styles.rowbox,
+        styles.menuitem,
+        {backgroundColor: theme.menubackground},
+      ]}>
+      <Text style={[styles.contenttext, {color: theme.menutextcolor}]}>
+        {menuitem.name}
+      </Text>
+      <View style={styles.rowbox}>
+        <Text style={[styles.contenttext, {color: theme.menutextcolor}]}>
+          {menuitem.perprice}
+        </Text>
+
+        <TouchableOpacity
+          style={styles.addbtn}
+          onPress={() => {
+            addItemToCart(menuitem);
+          }}>
           <Text style={[styles.contenttext, {color: theme.menutextcolor}]}>
-            {menuitem.name}
+            A
           </Text>
-          <View style={styles.rowbox}>
-            <Text style={[styles.contenttext, {color: theme.menutextcolor}]}>
-              {menuitem.perprice}
-            </Text>
-            <TouchableOpacity
-              style={styles.addbtn}
-              onPress={() => {
-                addItemToCart(menuitem);
-              }}>
-              <Text style={[styles.contenttext, {color: theme.menutextcolor}]}>
-                A
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      ))}
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
-const Menu = ({menuitems, theme}) => {
+const Menu = ({menuitems, theme, addedItems, setAddedItems}) => {
   return (
     <View>
       <Text style={[styles.header, {color: theme.cardheadercolor}]}>Menu</Text>
@@ -74,7 +100,16 @@ const Menu = ({menuitems, theme}) => {
           no menu for this resturant
         </Text>
       ) : (
-        <MenuItems theme={theme} menuitems={menuitems} />
+        <View style={styles.menuBox}>
+          {menuitems?.map(menuitem => (
+            <MenuItems
+              theme={theme}
+              menuitem={menuitem}
+              addedItems={addedItems}
+              setAddedItems={setAddedItems}
+            />
+          ))}
+        </View>
       )}
     </View>
   );
