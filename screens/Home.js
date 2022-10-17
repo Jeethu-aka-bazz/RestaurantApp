@@ -4,54 +4,57 @@ import {View, SafeAreaView, ScrollView} from 'react-native';
 import SearchBar from '../components/SearchBar';
 import HeaderTab from '../components/HeaderTab';
 import RestItems from '../components/RestItems';
-import store from '../store';
+import store from '../store/store';
+import * as API from '../Api';
+import {restaurantsList} from '../apiresponces/restaurantsApiRes';
+import {citysList} from '../apiresponces/citylistApiRes';
+import DrawerComp from '../components/ListDrawerComp';
 
 const Home = ({navigation}) => {
-  const [restaurants, setRestaurants] = useState([]);
-  const [theme, setTheme] = useState({});
+  const [restaurants, setRestaurants] = useState(restaurantsList);
+  const [theme, setTheme] = useState(store.getState().theme);
   const [cityname, setCityname] = useState('');
   const [selectedCity, setSelectedCity] = useState({});
   const [searchFocused, setSearchFocused] = useState(false);
-  const [cityList, setCityList] = useState([]);
+  const [cityList, setCityList] = useState(citysList);
+  const [showCartDraw, setShowCartDraw] = useState(false);
+
+  const [cartCount, setCartCount] = useState(store.getState().cartitems.length);
+  const cartitems = store.getState().cartitems;
+
+  console.log(process.env);
 
   useEffect(() => {
-    store.dispatch({
-      type: 'changeDarkTheme',
-    });
-    setTheme(store.getState());
-  }, []);
+    setCartCount(store.getState().cartitems.length);
+  }, [cartitems]);
 
   useEffect(() => {
     (async () => {
-      const apiLink = 'https://worldwide-restaurants.p.rapidapi.com/search';
+      const apiLink = API.SEARCH_API;
       const options = {
         method: 'POST',
-        header: {
-          'X-RapidAPI-Key':
-            '6f31118797msh5440041c30c0701p1e6a11jsn2e608fb72102',
-          'X-RapidAPI-Host': 'worldwide-restaurants.p.rapidapi.com',
+        headers: {
+          'X-RapidAPI-Key': API.API_KEY,
+          'X-RapidAPI-Host': API.HOST_NAME,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
-        body: {
+        body: JSON.stringify({
           q: cityname,
-        },
+          language: 'en_US',
+        }),
       };
-      await fetch(apiLink, options)
-        .then(res => {
-          return res.json();
-        })
-        .then(({results}) => {
-          setCityList(results.data);
-        });
+      //  setCityList(await API.callCitySearchApi(apiLink, options).data);
     })();
   }, [cityname]);
 
   const restaurantApiCall = async () => {
-    const apiLink = 'https://worldwide-restaurants.p.rapidapi.com/search';
+    const apiLink = API.RESTAURANT_API;
     const options = {
       method: 'POST',
       headers: {
-        'X-RapidAPI-Key': '6f31118797msh5440041c30c0701p1e6a11jsn2e608fb72102',
-        'X-RapidAPI-Host': 'worldwide-restaurants.p.rapidapi.com',
+        'X-RapidAPI-Key': API.API_KEY,
+        'X-RapidAPI-Host': API.HOST_NAME,
       },
       body: JSON.stringify({
         language: 'en_US',
@@ -60,19 +63,19 @@ const Home = ({navigation}) => {
         location_id: selectedCity.location_id,
       }),
     };
-    await fetch(apiLink, options)
-      .then(res => {
-        return res.json();
-      })
-      .then(({results}) => {
-        setRestaurants(results.data);
-      });
+    // setRestaurants(await API.callRestaurantApi(apiLink, options).data);
   };
 
   return (
     <SafeAreaView style={{backgroundColor: theme.pagebackground, flex: 1}}>
       <View style={{backgroundColor: theme.topbackground, padding: 15}}>
-        <HeaderTab theme={theme} setTheme={setTheme} />
+        <HeaderTab
+          theme={theme}
+          setTheme={setTheme}
+          navigation={navigation}
+          setShowCartDraw={setShowCartDraw}
+          cartCount={cartCount}
+        />
         <SearchBar
           theme={theme}
           cityname={cityname}
@@ -91,6 +94,12 @@ const Home = ({navigation}) => {
           theme={theme}
         />
       </ScrollView>
+      <DrawerComp
+        showDrawer={showCartDraw}
+        setShowDrawer={setShowCartDraw}
+        title="Cart"
+        items={cartitems}
+      />
     </SafeAreaView>
   );
 };

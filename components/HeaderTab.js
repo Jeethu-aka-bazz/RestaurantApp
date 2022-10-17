@@ -1,27 +1,43 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import {darktheme, lighttheme} from '../themes';
-import store from '../store';
+import store from '../store/store';
 
-const HeaderTab = ({theme, setTheme}) => {
+const HeaderTab = ({theme, setTheme, setShowCartDraw, cartCount}) => {
   const [active, setActive] = useState('Dark');
+  const cart = store.getState().cartitems;
   return (
-    <View style={[styles.rowStyle, {marginTop: 10, alignSelf: 'center'}]}>
-      <HeadButton
-        title="Dark"
-        active={active}
-        setActive={setActive}
-        theme={theme}
-        setTheme={setTheme}
-      />
-      <HeadButton
-        title="Light"
-        active={active}
-        setActive={setActive}
-        theme={theme}
-        setTheme={setTheme}
-      />
+    <View
+      style={[
+        styles.rowStyle,
+        {marginTop: 10, marginLeft: 70, justifyContent: 'space-evenly'},
+      ]}>
+      <View style={[styles.rowStyle]}>
+        <HeadButton
+          title="Dark"
+          active={active}
+          setActive={setActive}
+          theme={theme}
+          setTheme={setTheme}
+        />
+        <HeadButton
+          title="Light"
+          active={active}
+          setActive={setActive}
+          theme={theme}
+          setTheme={setTheme}
+        />
+      </View>
+      <TouchableOpacity
+        style={[styles.gotocartstyle, styles.rowStyle]}
+        onPress={() => {
+          setShowCartDraw(true);
+        }}>
+        <Text style={{color: theme.searchbartextcolor}}>cart</Text>
+        {(cartCount !== null || cartCount > 0) && (
+          <Text style={{color: theme.searchbartextcolor}}>{cart?.length}</Text>
+        )}
+      </TouchableOpacity>
     </View>
   );
 };
@@ -29,16 +45,17 @@ const HeaderTab = ({theme, setTheme}) => {
 const HeadButton = ({title, active, setActive, theme, setTheme}) => {
   const inActiveButtonStyles = {
     color: theme.cardsubheadercolor,
+    borderRadius: 30,
   };
 
   const changeDark = () => {
     store.dispatch({type: 'changeDarkTheme'});
-    setTheme(store.getState());
+    setTheme(store.getState().theme);
   };
 
   const changeLight = () => {
     store.dispatch({type: 'changeLightTheme'});
-    setTheme(store.getState());
+    setTheme(store.getState().theme);
   };
 
   const changeTheme = () => {
@@ -50,8 +67,8 @@ const HeadButton = ({title, active, setActive, theme, setTheme}) => {
     <TouchableOpacity onPress={changeTheme} style={{borderRadius: 30}}>
       <Text
         style={[
-          active === title ? styles.activeStyle : inActiveButtonStyles,
           styles.HeadButtonText,
+          active === title ? styles.activeStyle : inActiveButtonStyles,
         ]}>
         {title}
       </Text>
@@ -66,7 +83,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     paddingHorizontal: 20,
     paddingVertical: 3,
-    borderRadius: 30,
   },
   rowStyle: {
     flexDirection: 'row',
@@ -75,6 +91,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     color: '#fff',
     borderRadius: 50,
+  },
+  gotocartstyle: {
+    alignSelf: 'center',
   },
 });
 

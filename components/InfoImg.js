@@ -2,10 +2,10 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import store from '../store';
+import store from '../store/store';
 
 const InfoImg = ({photosource, navigation}) => {
-  const theme = store.getState();
+  const theme = store.getState().theme;
   return (
     <View style={styles.imgbox}>
       <TouchableOpacity
