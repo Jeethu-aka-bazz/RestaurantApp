@@ -1,14 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {View, SafeAreaView, ScrollView} from 'react-native';
-import SearchBar from '../components/SearchBar';
+import SearchBar from '../components/Home/SearchBar';
 import HeaderTab from '../components/HeaderTab';
-import RestItems from '../components/RestItems';
+import RestItems from '../components/Home/RestItems';
 import store from '../store/store';
 import * as API from '../Api';
 import {restaurantsList} from '../apiresponces/restaurantsApiRes';
 import {citysList} from '../apiresponces/citylistApiRes';
-import DrawerComp from '../components/ListDrawerComp';
+import ListDrawerComp from '../components/ListDrawerComp';
 
 const Home = ({navigation}) => {
   const [restaurants, setRestaurants] = useState(restaurantsList);
@@ -22,11 +23,11 @@ const Home = ({navigation}) => {
   const [cartCount, setCartCount] = useState(store.getState().cartitems.length);
   const cartitems = store.getState().cartitems;
 
-  console.log(process.env);
-
   useEffect(() => {
-    setCartCount(store.getState().cartitems.length);
-  }, [cartitems]);
+    navigation.addListener('focus', () => {
+      setCartCount(store.getState().cartitems.length);
+    });
+  }, [navigation]);
 
   useEffect(() => {
     (async () => {
@@ -92,7 +93,7 @@ const Home = ({navigation}) => {
           theme={theme}
         />
       </ScrollView>
-      <DrawerComp
+      <ListDrawerComp
         showDrawer={showCartDraw}
         setShowDrawer={setShowCartDraw}
         title="Cart"

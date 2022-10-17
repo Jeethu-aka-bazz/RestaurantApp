@@ -2,7 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import store from '../store/store';
+import store from '../../store/store';
 
 const InfoContent = ({
   restaurantname,
@@ -59,7 +59,6 @@ const MenuItems = ({menuitem, theme, addedItems, setAddedItems}) => {
     indexOfRepeateditem > -1 ? updateItem() : addItem();
 
     setAddedItems(store.getState().cartitems);
-    console.log('menuitem', addedItems, indexOfRepeateditem);
   };
 
   return (
@@ -76,7 +75,6 @@ const MenuItems = ({menuitem, theme, addedItems, setAddedItems}) => {
         <Text style={[styles.contenttext, {color: theme.menutextcolor}]}>
           {menuitem.perprice}
         </Text>
-
         <TouchableOpacity
           style={styles.addbtn}
           onPress={() => {

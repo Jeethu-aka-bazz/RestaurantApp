@@ -13,6 +13,9 @@ const initialState = {
 
   menubackground: '#444',
   menutextcolor: '#ccc',
+
+  buttonstext: '#000',
+  buttonsbackground: '#fff',
 };
 
 export default function themeReducer(state = initialState, action) {
@@ -32,6 +35,9 @@ export default function themeReducer(state = initialState, action) {
 
       menubackground: '#ddd',
       menutextcolor: '#333',
+
+      buttonstext: '#fff',
+      buttonsbackground: '#000',
     };
   } else if (action.type === 'changeDarkTheme') {
     return {
@@ -49,6 +55,9 @@ export default function themeReducer(state = initialState, action) {
 
       menubackground: '#444',
       menutextcolor: '#ccc',
+
+      buttonsbackground: '#fff',
+      buttonstext: '#000',
     };
   }
   return state;

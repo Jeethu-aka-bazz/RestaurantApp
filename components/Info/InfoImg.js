@@ -2,7 +2,7 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import store from '../store/store';
+import store from '../../store/store';
 
 const InfoImg = ({photosource, navigation}) => {
   const theme = store.getState().theme;
@@ -11,7 +11,7 @@ const InfoImg = ({photosource, navigation}) => {
       <TouchableOpacity
         style={styles.gobackstyle}
         onPress={() => {
-          navigation.goBack();
+          navigation.navigate('Home');
         }}>
         <Text style={{fontSize: 16, color: theme.cardsubheadercolor}}>
           goBack

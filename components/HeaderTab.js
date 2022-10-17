@@ -5,7 +5,6 @@ import store from '../store/store';
 
 const HeaderTab = ({theme, setTheme, setShowCartDraw, cartCount}) => {
   const [active, setActive] = useState('Dark');
-  const cart = store.getState().cartitems;
   return (
     <View
       style={[
@@ -13,14 +12,14 @@ const HeaderTab = ({theme, setTheme, setShowCartDraw, cartCount}) => {
         {marginTop: 10, marginLeft: 70, justifyContent: 'space-evenly'},
       ]}>
       <View style={[styles.rowStyle]}>
-        <HeadButton
+        <ChangeThemeButton
           title="Dark"
           active={active}
           setActive={setActive}
           theme={theme}
           setTheme={setTheme}
         />
-        <HeadButton
+        <ChangeThemeButton
           title="Light"
           active={active}
           setActive={setActive}
@@ -34,18 +33,21 @@ const HeaderTab = ({theme, setTheme, setShowCartDraw, cartCount}) => {
           setShowCartDraw(true);
         }}>
         <Text style={{color: theme.searchbartextcolor}}>cart</Text>
-        {(cartCount !== null || cartCount > 0) && (
-          <Text style={{color: theme.searchbartextcolor}}>{cart?.length}</Text>
+        {cartCount > 0 && (
+          <Text style={{color: theme.searchbartextcolor}}>{cartCount}</Text>
         )}
       </TouchableOpacity>
     </View>
   );
 };
 
-const HeadButton = ({title, active, setActive, theme, setTheme}) => {
+const ChangeThemeButton = ({title, active, setActive, theme, setTheme}) => {
   const inActiveButtonStyles = {
     color: theme.cardsubheadercolor,
-    borderRadius: 30,
+  };
+  const activeStyle = {
+    backgroundColor: '#000',
+    color: '#fff',
   };
 
   const changeDark = () => {
@@ -67,8 +69,8 @@ const HeadButton = ({title, active, setActive, theme, setTheme}) => {
     <TouchableOpacity onPress={changeTheme} style={{borderRadius: 30}}>
       <Text
         style={[
-          styles.HeadButtonText,
-          active === title ? styles.activeStyle : inActiveButtonStyles,
+          {...styles.HeadButtonText},
+          active === title ? activeStyle : inActiveButtonStyles,
         ]}>
         {title}
       </Text>
@@ -87,13 +89,12 @@ const styles = StyleSheet.create({
   rowStyle: {
     flexDirection: 'row',
   },
-  activeStyle: {
-    backgroundColor: '#000',
-    color: '#fff',
-    borderRadius: 50,
-  },
+
   gotocartstyle: {
     alignSelf: 'center',
+    borderRadius: 30,
+    paddingVertical: 4,
+    paddingHorizontal: 12,
   },
 });
 

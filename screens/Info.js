@@ -2,13 +2,17 @@
 import React, {useState} from 'react';
 import {SafeAreaView, ScrollView} from 'react-native';
 import HeaderTab from '../components/HeaderTab';
-import InfoContent from '../components/InfoContent';
-import InfoImg from '../components/InfoImg';
+import CartButton from '../components/Info/CartButton';
+import InfoContent from '../components/Info/InfoContent';
+import InfoImg from '../components/Info/InfoImg';
+import ListDrawerComp from '../components/ListDrawerComp';
 import store from '../store/store';
 
 const Info = ({navigation, route}) => {
+  const [showCartDraw, setShowCartDraw] = useState(false);
   const restData = route.params.restData;
   const theme = store.getState().theme;
+  const cartitems = store.getState().cartitems;
 
   const menuitems = [
     {name: 'veg rice', perprice: 40, currency: 'INR', rating: 4.5},
@@ -24,10 +28,14 @@ const Info = ({navigation, route}) => {
     {name: 'shrimp gravy', perprice: 180, currency: 'INR', rating: 4.1},
   ];
 
-  const [addedItems, setAddedItems] = useState([]);
+  const [addedItems, setAddedItems] = useState(store.getState().cartitems);
 
   return (
-    <SafeAreaView style={{backgroundColor: theme.pagebackground, flex: 1}}>
+    <SafeAreaView
+      style={{
+        backgroundColor: theme.pagebackground,
+        flex: 1,
+      }}>
       <InfoImg
         photosource={restData?.photo?.images?.original?.url}
         navigation={navigation}
@@ -44,7 +52,17 @@ const Info = ({navigation, route}) => {
           addedItems={addedItems}
           setAddedItems={setAddedItems}
         />
+        <CartButton
+          setShowCartDraw={setShowCartDraw}
+          showCartDraw={showCartDraw}
+        />
       </ScrollView>
+      <ListDrawerComp
+        showDrawer={showCartDraw}
+        setShowDrawer={setShowCartDraw}
+        title="Cart"
+        items={cartitems}
+      />
     </SafeAreaView>
   );
 };
