@@ -27,13 +27,14 @@ const InfoImg = ({photosource, navigation}) => {
 const styles = StyleSheet.create({
   imgbox: {
     marginTop: 10,
+    backgroundColor: 'transparent',
+    paddingHorizontal: 5,
   },
   imgstyle: {
     width: '100%',
     height: 180,
     position: 'relative',
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
+    borderRadius: 10,
   },
   gobackstyle: {
     width: 70,

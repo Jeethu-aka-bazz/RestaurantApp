@@ -177,7 +177,7 @@ const Price = ({price, theme}) => {
 const ContactText = ({address, ratings, theme}) => {
   return (
     <View style={styles.contactBox}>
-      <Text style={[styles.contenttext({color: theme.cardsubheadercolor})]}>
+      <Text style={styles.contenttext({color: theme.cardsubheadercolor})}>
         {`\n${address?.street1}\n${address?.city}\n${address?.country}.`}
       </Text>
       <Text style={styles.rating(theme)}>{`${ratings.slice(0, 3)} Stars`}</Text>
@@ -202,6 +202,7 @@ const styles = StyleSheet.create({
   infocard: theme => ({
     backgroundColor: theme.cardbackground,
     padding: 15,
+    borderRadius: 15,
   }),
   header: theme => ({
     fontWeight: '700',
