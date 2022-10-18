@@ -29,7 +29,9 @@ const HeaderTab = ({theme, setTheme, setShowCartDraw, cartCount}) => {
         }}>
         <Text style={styles.carttext(theme)}>cart</Text>
         {cartCount > 0 && (
-          <Text style={styles.carttext(theme)}>{cartCount}</Text>
+          <View style={styles.cartcount(theme)}>
+            <Text style={[styles.carttext(theme)]}>{cartCount}</Text>
+          </View>
         )}
       </TouchableOpacity>
     </View>
@@ -97,7 +99,15 @@ const styles = StyleSheet.create({
   inActiveButtonStyles: {
     color: '#000',
   },
+  cartcount: theme => ({
+    backgroundColor: '#abc6',
+    paddingHorizontal: 8,
+    marginLeft: 3,
+    paddingVertical: 1,
+    borderRadius: 30,
+  }),
   carttext: theme => ({
+    fontWeight: '600',
     color: theme.searchbartextcolor,
   }),
   Headerbutton: isActive => ({
