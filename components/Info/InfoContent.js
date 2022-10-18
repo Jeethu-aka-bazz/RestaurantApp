@@ -1,6 +1,5 @@
 /* eslint-disable no-shadow */
-/* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import store from '../../store/store';
 
@@ -17,11 +16,9 @@ const InfoContent = ({
 }) => {
   const theme = store.getState().theme;
   return (
-    <View style={{backgroundColor: theme.cardbackground, padding: 15}}>
-      <Text style={[styles.header, {color: theme.cardheadercolor}]}>
-        {restaurantname}
-      </Text>
-      <Text style={[styles.contenttext, {color: theme.cardsubheadercolor}]}>
+    <View style={styles.infocard(theme)}>
+      <Text style={styles.header(theme)}>{restaurantname}</Text>
+      <Text style={styles.contenttext({color: theme.cardsubheadercolor})}>
         {cuisine?.map(e => e.name + ', ')}
       </Text>
       <ContactText address={address} ratings={ratings} theme={theme} />
@@ -62,17 +59,12 @@ const MenuItems = ({menuitem, theme, addedItems, setAddedItems}) => {
   };
 
   return (
-    <View
-      style={[
-        styles.rowbox,
-        styles.menuitem,
-        {backgroundColor: theme.menubackground},
-      ]}>
-      <Text style={[styles.contenttext, {color: theme.menutextcolor}]}>
+    <View style={[styles.rowbox, styles.menuitem(theme)]}>
+      <Text style={styles.contenttext({color: theme.menutextcolor})}>
         {menuitem.name}
       </Text>
       <View style={styles.rowbox}>
-        <Text style={[styles.contenttext, {color: theme.menutextcolor}]}>
+        <Text style={styles.contenttext({color: theme.menutextcolor})}>
           {menuitem.perprice}
         </Text>
         <TouchableOpacity
@@ -80,7 +72,7 @@ const MenuItems = ({menuitem, theme, addedItems, setAddedItems}) => {
           onPress={() => {
             addItemToCart(menuitem);
           }}>
-          <Text style={[styles.contenttext, {color: theme.menutextcolor}]}>
+          <Text style={styles.contenttext({color: theme.menutextcolor})}>
             A
           </Text>
         </TouchableOpacity>
@@ -92,13 +84,13 @@ const MenuItems = ({menuitem, theme, addedItems, setAddedItems}) => {
 const Menu = ({menuitems, theme, addedItems, setAddedItems}) => {
   return (
     <View>
-      <Text style={[styles.header, {color: theme.cardheadercolor}]}>Menu</Text>
+      <Text style={[styles.header(theme)]}>Menu</Text>
       {menuitems?.length === 0 || menuitems === undefined ? (
         <Text style={[{color: theme.cardsubheadercolor}]}>
           no menu for this resturant
         </Text>
       ) : (
-        <View style={styles.menuBox}>
+        <View>
           {menuitems?.map(menuitem => (
             <MenuItems
               theme={theme}
@@ -114,61 +106,27 @@ const Menu = ({menuitems, theme, addedItems, setAddedItems}) => {
 };
 
 const Price = ({price, theme}) => {
-  return (
-    <Text
-      style={[
-        styles.price,
-        {color: theme.cardsubheadercolor},
-      ]}>{`${price} for two`}</Text>
-  );
+  return <Text style={styles.price(theme)}>{`${price} for two`}</Text>;
 };
 
 const ContactText = ({address, ratings, theme}) => {
   return (
     <View style={styles.contactBox}>
-      <Text style={[styles.contenttext, {color: theme.cardsubheadercolor}]}>
+      <Text style={[styles.contenttext({color: theme.cardsubheadercolor})]}>
         {`\n${address?.street1}\n${address?.city}\n${address?.country}.`}
       </Text>
-      <Text style={[styles.rating, {color: theme.cardsubheadercolor}]}>
-        {`${ratings.slice(0, 3)} Stars`}
-      </Text>
+      <Text style={styles.rating(theme)}>{`${ratings.slice(0, 3)} Stars`}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  header: {
-    fontWeight: '700',
-    fontSize: 40,
+  rowbox: {
+    flexDirection: 'row',
   },
   contactBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  contenttext: {
-    fontSize: 17,
-    fontWeight: '600',
-  },
-  rating: {
-    fontWeight: '600',
-    fontSize: 14,
-    alignSelf: 'center',
-  },
-  price: {
-    alignSelf: 'center',
-  },
-  rowbox: {
-    flexDirection: 'row',
-  },
-  menuBox: {
-    // padding: 10,
-  },
-  menuitem: {
-    justifyContent: 'space-between',
-    marginVertical: 5,
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    borderRadius: 10,
   },
   addbtn: {
     marginLeft: 30,
@@ -176,6 +134,39 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     fontSize: 16,
   },
+  infocard: theme => ({
+    backgroundColor: theme.cardbackground,
+    padding: 15,
+  }),
+  header: theme => ({
+    fontWeight: '700',
+    fontSize: 40,
+    color: theme.cardheadercolor,
+  }),
+  contenttext: ({color}) => ({
+    fontSize: 17,
+    fontWeight: '600',
+    color: color,
+  }),
+  rating: theme => ({
+    fontWeight: '600',
+    fontSize: 14,
+    alignSelf: 'center',
+    color: theme.cardsubheadercolor,
+  }),
+  price: theme => ({
+    alignSelf: 'center',
+    color: theme.cardsubheadercolor,
+  }),
+
+  menuitem: theme => ({
+    justifyContent: 'space-between',
+    marginVertical: 5,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderRadius: 10,
+    backgroundColor: theme.menubackground,
+  }),
 });
 
 export default InfoContent;

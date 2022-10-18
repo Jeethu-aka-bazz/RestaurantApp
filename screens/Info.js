@@ -1,13 +1,12 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {SafeAreaView, ScrollView} from 'react-native';
-import HeaderTab from '../components/HeaderTab';
+import {ScrollView} from 'react-native';
 import CartButton from '../components/Info/CartButton';
 import InfoContent from '../components/Info/InfoContent';
 import InfoImg from '../components/Info/InfoImg';
 import ListDrawerComp from '../components/ListDrawerComp';
 import store from '../store/store';
 import menuitems from '../apiresponces/menuItems';
+import ScreenContainer from '../components/ScreenContainer';
 
 const Info = ({navigation, route}) => {
   const [showCartDraw, setShowCartDraw] = useState(false);
@@ -18,11 +17,7 @@ const Info = ({navigation, route}) => {
   const [addedItems, setAddedItems] = useState(store.getState().cartitems);
 
   return (
-    <SafeAreaView
-      style={{
-        backgroundColor: theme.pagebackground,
-        flex: 1,
-      }}>
+    <ScreenContainer theme={theme}>
       <InfoImg
         photosource={restData?.photo?.images?.original?.url}
         navigation={navigation}
@@ -50,7 +45,7 @@ const Info = ({navigation, route}) => {
         title="Cart"
         items={cartitems}
       />
-    </SafeAreaView>
+    </ScreenContainer>
   );
 };
 

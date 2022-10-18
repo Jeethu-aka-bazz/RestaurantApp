@@ -1,15 +1,15 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {View, SafeAreaView, ScrollView} from 'react-native';
+import {ScrollView} from 'react-native';
 import SearchBar from '../components/Home/SearchBar';
-import HeaderTab from '../components/HeaderTab';
+import HeaderTab from '../components/Home/HeaderTab';
 import RestItems from '../components/Home/RestItems';
 import store from '../store/store';
 import * as API from '../Api';
 import {restaurantsList} from '../apiresponces/restaurantsApiRes';
 import {citysList} from '../apiresponces/citylistApiRes';
 import ListDrawerComp from '../components/ListDrawerComp';
+import ScreenContainer from '../components/ScreenContainer';
+import HeaderTabContainer from '../components/Home/HeaderTabContainer';
 
 const Home = ({navigation}) => {
   const [restaurants, setRestaurants] = useState(restaurantsList);
@@ -66,8 +66,8 @@ const Home = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: theme.pagebackground, flex: 1}}>
-      <View style={{backgroundColor: theme.topbackground, padding: 15}}>
+    <ScreenContainer theme={theme}>
+      <HeaderTabContainer theme={theme}>
         <HeaderTab
           theme={theme}
           setTheme={setTheme}
@@ -85,7 +85,7 @@ const Home = ({navigation}) => {
           setSearchFocused={setSearchFocused}
           restaurantApiCall={restaurantApiCall}
         />
-      </View>
+      </HeaderTabContainer>
       <ScrollView showsVerticalScrollIndicator={false}>
         <RestItems
           navigation={navigation}
@@ -99,7 +99,7 @@ const Home = ({navigation}) => {
         title="Cart"
         items={cartitems}
       />
-    </SafeAreaView>
+    </ScreenContainer>
   );
 };
 

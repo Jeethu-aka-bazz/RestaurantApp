@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -13,9 +12,7 @@ const InfoImg = ({photosource, navigation}) => {
         onPress={() => {
           navigation.navigate('Home');
         }}>
-        <Text style={{fontSize: 16, color: theme.cardsubheadercolor}}>
-          goBack
-        </Text>
+        <Text style={styles.gobacktext(theme)}>goBack</Text>
       </TouchableOpacity>
       <Image
         source={{
@@ -43,6 +40,10 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     marginBottom: 5,
   },
+  gobacktext: theme => ({
+    fontSize: 16,
+    color: theme.cardsubheadercolor,
+  }),
 });
 
 export default InfoImg;

@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -8,15 +7,13 @@ const CartButton = ({setShowCartDraw, showCartDraw}) => {
   const theme = store.getState().theme;
   return (
     <View style={styles.buttonbox}>
-      <View
-        style={{flexDirection: 'row', justifyContent: 'center', width: '100%'}}>
+      <View style={styles.buttoncont}>
         <TouchableOpacity
-          style={[styles.button, {backgroundColor: theme.buttonsbackground}]}
+          style={styles.button({backgroundColor: theme.buttonsbackground})}
           onPress={() => {
             setShowCartDraw(!showCartDraw);
           }}>
-          <Text
-            style={{color: theme.buttonstext, fontSize: 20, fontWeight: '600'}}>
+          <Text style={styles.buttontext({color: theme.buttonstext})}>
             View Cart
           </Text>
         </TouchableOpacity>
@@ -35,14 +32,25 @@ const styles = StyleSheet.create({
     // bottom: 130,
     // zIndex: 100,
   },
-  button: {
+  buttoncont: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  button: ({backgroundColor}) => ({
     paddingVertical: 15,
     marginTop: 20,
     alignItems: 'center',
     width: 300,
     // position: 'relative',
     borderRadius: 30,
-  },
+    backgroundColor: backgroundColor,
+  }),
+  buttontext: ({color}) => ({
+    color: color,
+    fontSize: 20,
+    fontWeight: '600',
+  }),
 });
 
 export default CartButton;

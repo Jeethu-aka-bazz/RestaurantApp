@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -11,11 +10,7 @@ const RestItems = ({navigation, restaurants, theme}) => {
           onPress={() => {
             navigation.navigate('Info', {restData});
           }}
-          style={{
-            marginTop: 10,
-            padding: 10,
-            backgroundColor: theme.cardbackground,
-          }}>
+          style={styles.restaurantcontainer(theme)}>
           <RestImage source={restData?.photo?.images?.original?.url} />
           <RestInfo
             name={restData?.name}
@@ -31,15 +26,13 @@ const RestItems = ({navigation, restaurants, theme}) => {
 
 const RestInfo = ({name, location, rating, theme}) => {
   return (
-    <View style={[Styles.rowbox, Styles.infobox]}>
+    <View style={[styles.rowbox, styles.infobox]}>
       <View>
-        <Text style={[{color: theme.cardheadercolor}, Styles.restname]}>
-          {name}
-        </Text>
-        <Text style={{color: theme.cardsubheadercolor}}>{location}</Text>
+        <Text style={[styles.headertext(theme), styles.restname]}>{name}</Text>
+        <Text style={styles.subheadertext(theme)}>{location}</Text>
       </View>
-      <View style={[Styles.rowbox, Styles.rating, {flexDirection: 'row'}]}>
-        <Text style={{marginRight: 4, color: theme.cardsubheadercolor}}>
+      <View style={[styles.rowbox, styles.rating, styles.rowbox]}>
+        <Text style={[styles.subheadertext(theme), styles.ratingtext]}>
           {rating}
         </Text>
         <Ionicons name="star-sharp" size={20} />
@@ -55,26 +48,20 @@ const RestImage = ({source}) => {
         source={{
           uri: source,
         }}
-        style={{width: '100%', height: 180, position: 'relative'}}
+        style={styles.restaurantimage}
       />
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
-        }}>
+      <TouchableOpacity style={styles.favicon}>
         <Ionicons name="heart-outline" size={30} />
       </TouchableOpacity>
     </View>
   );
 };
 
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
   rowbox: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-
   infobox: {
     marginTop: 13,
     justifyContent: 'space-between',
@@ -87,6 +74,30 @@ const Styles = StyleSheet.create({
     padding: 3,
     borderRadius: 30,
   },
+  restaurantimage: {
+    width: '100%',
+    height: 180,
+    position: 'relative',
+  },
+  favicon: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
+  ratingtext: {
+    marginRight: 4,
+  },
+  restaurantcontainer: theme => ({
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: theme.cardbackground,
+  }),
+  headertext: theme => ({
+    color: theme.cardheadercolor,
+  }),
+  subheadertext: theme => ({
+    color: theme.cardsubheadercolor,
+  }),
 });
 
 export default RestItems;

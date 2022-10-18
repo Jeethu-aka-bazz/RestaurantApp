@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
   View,
@@ -7,8 +6,6 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Fontisto from 'react-native-vector-icons/Fontisto';
 
 const SearchBar = ({
   theme,
@@ -22,7 +19,7 @@ const SearchBar = ({
 }) => {
   return (
     <>
-      <View style={{marginTop: 15, flexDirection: 'row'}}>
+      <View style={styles.searchboxstyle}>
         <TextInput
           placeholder="search"
           value={cityname}
@@ -34,13 +31,7 @@ const SearchBar = ({
           onFocus={() => {
             setSearchFocused(true);
           }}
-          style={[
-            styles.textInput,
-            {
-              backgroundColor: theme.searchbarbackground,
-              color: theme.searchbartextcolor,
-            },
-          ]}
+          style={styles.textInput(theme)}
         />
         <Btn
           title="search"
@@ -72,13 +63,7 @@ const SearchList = ({
   setSearchFocused,
 }) => {
   return (
-    <View
-      style={[
-        styles.searchlist,
-        {
-          backgroundColor: theme.searchbarbackground,
-        },
-      ]}>
+    <View style={styles.searchlist(theme)}>
       {cityList.map(e => {
         const locationresult = e.result_object;
         return (
@@ -89,10 +74,7 @@ const SearchList = ({
               setCityname(locationresult.name);
               setSearchFocused(false);
             }}>
-            <Text
-              style={{
-                color: theme.searchbartextcolor,
-              }}>
+            <Text style={styles.searchlisttext(theme)}>
               {locationresult.name}
             </Text>
           </TouchableOpacity>
@@ -104,29 +86,14 @@ const SearchList = ({
 
 const Btn = ({title, theme, onPress}) => {
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={[
-        styles.rightbuttonstyles,
-        {
-          backgroundColor: theme.cardbackground,
-        },
-      ]}>
-      <Text
-        style={[
-          styles.rightbuttontextstyles,
-          {
-            color: theme.searchbartextcolor,
-          },
-        ]}>
-        {title}
-      </Text>
+    <TouchableOpacity onPress={onPress} style={styles.rightbuttonstyles(theme)}>
+      <Text style={styles.rightbuttontextstyles(theme)}>{title}</Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  rightbuttonstyles: {
+  rightbuttonstyles: theme => ({
     flexDirection: 'row',
     paddingHorizontal: 9,
     borderRadius: 30,
@@ -134,28 +101,40 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 8,
     right: 8,
-  },
-  rightbuttontextstyles: {
+    backgroundColor: theme.cardbackground,
+  }),
+  rightbuttontextstyles: theme => ({
     marginLeft: 6,
     fontWeight: '600',
     fontSize: 13,
-  },
-  textInput: {
+    color: theme.searchbartextcolor,
+  }),
+  textInput: theme => ({
     borderRadius: 50,
     padding: 15,
     marginTop: 3,
     width: '100%',
     position: 'relative',
-  },
-  searchlist: {
+    backgroundColor: theme.searchbarbackground,
+    color: theme.searchbartextcolor,
+  }),
+  searchlist: theme => ({
     padding: 10,
     borderRadius: 10,
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
-  },
+    backgroundColor: theme.searchbarbackground,
+  }),
+  searchlisttext: theme => ({
+    color: theme.searchbartextcolor,
+  }),
   searchlistcontent: {
     marginVertical: 3,
     padding: 5,
+  },
+  searchboxstyle: {
+    marginTop: 15,
+    flexDirection: 'row',
   },
 });
 

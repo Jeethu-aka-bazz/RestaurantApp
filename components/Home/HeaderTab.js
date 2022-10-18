@@ -1,16 +1,11 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import store from '../store/store';
+import store from '../../store/store';
 
 const HeaderTab = ({theme, setTheme, setShowCartDraw, cartCount}) => {
   const [active, setActive] = useState('Dark');
   return (
-    <View
-      style={[
-        styles.rowStyle,
-        {marginTop: 10, marginLeft: 70, justifyContent: 'space-evenly'},
-      ]}>
+    <View style={[styles.rowStyle, styles.HeaderTab]}>
       <View style={[styles.rowStyle]}>
         <ChangeThemeButton
           title="Dark"
@@ -32,9 +27,9 @@ const HeaderTab = ({theme, setTheme, setShowCartDraw, cartCount}) => {
         onPress={() => {
           setShowCartDraw(true);
         }}>
-        <Text style={{color: theme.searchbartextcolor}}>cart</Text>
+        <Text style={styles.carttext(theme)}>cart</Text>
         {cartCount > 0 && (
-          <Text style={{color: theme.searchbartextcolor}}>{cartCount}</Text>
+          <Text style={styles.carttext(theme)}>{cartCount}</Text>
         )}
       </TouchableOpacity>
     </View>
@@ -42,14 +37,6 @@ const HeaderTab = ({theme, setTheme, setShowCartDraw, cartCount}) => {
 };
 
 const ChangeThemeButton = ({title, active, setActive, theme, setTheme}) => {
-  const inActiveButtonStyles = {
-    color: theme.cardsubheadercolor,
-  };
-  const activeStyle = {
-    backgroundColor: '#000',
-    color: '#fff',
-  };
-
   const changeDark = () => {
     store.dispatch({type: 'changeDarkTheme'});
     setTheme(store.getState().theme);
@@ -66,14 +53,18 @@ const ChangeThemeButton = ({title, active, setActive, theme, setTheme}) => {
   };
 
   return (
-    <TouchableOpacity onPress={changeTheme} style={{borderRadius: 30}}>
-      <Text
-        style={[
-          {...styles.HeadButtonText},
-          active === title ? activeStyle : inActiveButtonStyles,
-        ]}>
-        {title}
-      </Text>
+    <TouchableOpacity onPress={changeTheme}>
+      <View style={styles.Headerbutton(active === title)}>
+        <Text
+          style={[
+            {...styles.HeadButtonText},
+            active === title
+              ? styles.activeButtonStyle
+              : styles.inActiveButtonStyles,
+          ]}>
+          {title}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -89,13 +80,30 @@ const styles = StyleSheet.create({
   rowStyle: {
     flexDirection: 'row',
   },
-
   gotocartstyle: {
     alignSelf: 'center',
     borderRadius: 30,
     paddingVertical: 4,
     paddingHorizontal: 12,
   },
+  HeaderTab: {
+    marginTop: 10,
+    marginLeft: 70,
+    justifyContent: 'space-evenly',
+  },
+  activeButtonStyle: {
+    color: '#fff',
+  },
+  inActiveButtonStyles: {
+    color: '#000',
+  },
+  carttext: theme => ({
+    color: theme.searchbartextcolor,
+  }),
+  Headerbutton: isActive => ({
+    borderRadius: 30,
+    backgroundColor: isActive ? '#000' : '#fff',
+  }),
 });
 
 export default HeaderTab;
