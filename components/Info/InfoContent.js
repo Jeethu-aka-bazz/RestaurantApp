@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-shadow */
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import store from '../../store/store';
 
@@ -34,6 +35,17 @@ const InfoContent = ({
 };
 
 const MenuItems = ({menuitem, theme, addedItems, setAddedItems}) => {
+  const [quantity, setQuantity] = useState(
+    addedItems?.filter(Items => Items.name === menuitem.name)[0],
+  );
+
+  useEffect(() => {
+    const [updatedQuantity] = addedItems?.filter(
+      Items => Items.name === menuitem.name,
+    );
+    setQuantity(updatedQuantity);
+  }, [addedItems]);
+
   const addItemToCart = menuitem => {
     const indexOfRepeateditem = addedItems.findIndex(
       addeditem => addeditem.name === menuitem.name,
@@ -56,6 +68,40 @@ const MenuItems = ({menuitem, theme, addedItems, setAddedItems}) => {
     indexOfRepeateditem > -1 ? updateItem() : addItem();
 
     setAddedItems(store.getState().cartitems);
+    updateQuantity();
+  };
+
+  const updateQuantity = () => {
+    const [updatedQuantity] = addedItems?.filter(
+      Items => Items.name === menuitem.name,
+    );
+    setQuantity(updatedQuantity);
+  };
+
+  const removeItemFromCart = menuitem => {
+    const indexOfRepeateditem = addedItems?.findIndex(
+      addeditem => addeditem.name === menuitem.name,
+    );
+    const itemtoberemoved = addedItems[indexOfRepeateditem];
+
+    const removeItem = () => {
+      store.dispatch({
+        type: 'removeItem',
+        indexOfRepeateditem: indexOfRepeateditem,
+      });
+    };
+
+    const reduceQuantityOfItem = () => {
+      store.dispatch({
+        type: 'reduceItem',
+        indexOfRepeateditem: indexOfRepeateditem,
+      });
+    };
+
+    itemtoberemoved?.quantity && itemtoberemoved?.quantity === 1
+      ? removeItem()
+      : reduceQuantityOfItem();
+    updateQuantity();
   };
 
   return (
@@ -76,6 +122,25 @@ const MenuItems = ({menuitem, theme, addedItems, setAddedItems}) => {
             A
           </Text>
         </TouchableOpacity>
+
+        {quantity && (
+          <>
+            <View style={styles.addbtn}>
+              <Text style={styles.contenttext({color: theme.menutextcolor})}>
+                {quantity?.quantity || 1}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={styles.addbtn}
+              onPress={() => {
+                removeItemFromCart(menuitem);
+              }}>
+              <Text style={styles.contenttext({color: theme.menutextcolor})}>
+                -
+              </Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
     </View>
   );

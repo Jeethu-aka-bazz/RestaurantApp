@@ -14,9 +14,14 @@ export default function cartitemsReducer(state = [], action) {
       ...state[action.indexOfRepeateditem],
       quantity: state[action.indexOfRepeateditem].quantity + 1,
     });
+  } else if (action.type === 'reduceItem') {
+    state.splice(action.indexOfRepeateditem, 1, {
+      ...state[action.indexOfRepeateditem],
+      quantity: state[action.indexOfRepeateditem].quantity - 1,
+    });
+  } else if (action.type === 'removeItem') {
+    state.splice(action.indexOfRepeateditem, 1);
   }
 
   return state;
 }
-
-// store.dispatch({type: 'addItem', payload: {...menuitem, quantity: 1}});
