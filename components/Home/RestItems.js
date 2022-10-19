@@ -11,7 +11,10 @@ const RestItems = ({navigation, restaurants, theme}) => {
             navigation.navigate('Info', {restData});
           }}
           style={styles.restaurantcontainer(theme)}>
-          <RestImage source={restData?.photo?.images?.original?.url} />
+          <RestImage
+            source={restData?.photo?.images?.original?.url}
+            theme={theme}
+          />
           <RestInfo
             name={restData?.name}
             location={`${restData?.address_obj?.street1}, ${restData?.address_obj?.city}`}
@@ -35,13 +38,17 @@ const RestInfo = ({name, location, rating, theme}) => {
         <Text style={[styles.subheadertext(theme), styles.ratingtext]}>
           {rating}
         </Text>
-        <Ionicons name="star-sharp" size={20} />
+        <Ionicons
+          name="star-sharp"
+          size={20}
+          color={theme.cardsubheadercolor}
+        />
       </View>
     </View>
   );
 };
 
-const RestImage = ({source}) => {
+const RestImage = ({source, theme}) => {
   return (
     <View>
       <Image
@@ -51,7 +58,11 @@ const RestImage = ({source}) => {
         style={styles.restaurantimage}
       />
       <TouchableOpacity style={styles.favicon}>
-        <Ionicons name="heart-outline" size={30} />
+        <Ionicons
+          name="heart-outline"
+          size={30}
+          color={theme.cardsubheadercolor}
+        />
       </TouchableOpacity>
     </View>
   );

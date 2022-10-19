@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import store from '../../store/store';
 import MenuItems from './MenuItems';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const InfoContent = ({
   restaurantname,
@@ -67,12 +68,23 @@ const ContactText = ({address, ratings, theme}) => {
       <Text style={styles.contenttext({color: theme.cardsubheadercolor})}>
         {`\n${address?.street1}\n${address?.city}\n${address?.country}.`}
       </Text>
-      <Text style={styles.rating(theme)}>{`${ratings.slice(0, 3)} Stars`}</Text>
+      <View style={styles.rowbox}>
+        <Text style={styles.rating(theme)}>{`${ratings.slice(0, 3)}`}</Text>
+        <Ionicons
+          name="star-sharp"
+          size={20}
+          color={theme.cardsubheadercolor}
+        />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  rowbox: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+  },
   contactBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -98,6 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     alignSelf: 'center',
     color: theme.cardsubheadercolor,
+    marginRight: 5,
   }),
   price: theme => ({
     alignSelf: 'center',
