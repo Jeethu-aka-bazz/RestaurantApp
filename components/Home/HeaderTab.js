@@ -27,7 +27,7 @@ const HeaderTab = ({theme, setTheme, setShowCartDraw, cartCount}) => {
         onPress={() => {
           setShowCartDraw(true);
         }}>
-        <Text style={styles.carttext(theme)}>cart</Text>
+        <Text style={styles.carttext(theme)}>Cart</Text>
         {cartCount > 0 && (
           <View style={styles.cartcount(theme)}>
             <Text style={[styles.carttext(theme)]}>{cartCount}</Text>
