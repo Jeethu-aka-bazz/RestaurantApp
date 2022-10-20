@@ -1,6 +1,6 @@
 import React from 'react';
-import Home from './screens/Home';
-import Info from './screens/Info';
+import Home from '../screens/Home';
+import Info from '../screens/Info';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 

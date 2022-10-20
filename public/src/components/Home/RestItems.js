@@ -1,6 +1,5 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const RestItems = ({navigation, restaurants, theme}) => {
   return (
@@ -36,13 +35,8 @@ const RestInfo = ({name, location, rating, theme}) => {
       </View>
       <View style={[styles.rowbox, styles.rating, styles.rowbox]}>
         <Text style={[styles.subheadertext(theme), styles.ratingtext]}>
-          {rating}
+          {rating + ' R'}
         </Text>
-        <Ionicons
-          name="star-sharp"
-          size={20}
-          color={theme.cardsubheadercolor}
-        />
       </View>
     </View>
   );
@@ -57,13 +51,6 @@ const RestImage = ({source, theme}) => {
         }}
         style={styles.restaurantimage}
       />
-      <TouchableOpacity style={styles.favicon}>
-        <Ionicons
-          name="heart-outline"
-          size={30}
-          color={theme.cardsubheadercolor}
-        />
-      </TouchableOpacity>
     </View>
   );
 };

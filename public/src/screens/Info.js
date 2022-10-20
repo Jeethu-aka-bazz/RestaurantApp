@@ -5,7 +5,7 @@ import InfoContent from '../components/Info/InfoContent';
 import InfoImg from '../components/Info/InfoImg';
 import ListDrawerComp from '../components/ListDrawerComp';
 import store from '../store/store';
-import menuitems from '../apiresponces/menuItems';
+import menuitems from '../../apiresponces/menuItems';
 import ScreenContainer from '../components/ScreenContainer';
 
 const Info = ({navigation, route}) => {
