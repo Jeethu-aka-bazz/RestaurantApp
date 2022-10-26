@@ -7,22 +7,29 @@ import {
   View,
   Platform,
   ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 
 const RestItems = ({navigation, restaurants, theme}) => {
+  const {width: windowWidth} = useWindowDimensions();
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View
-        style={
-          (Platform.OS === 'web' || Platform.OS === 'windows') &&
-          styles.desktopcont
-        }>
+        style={[
+          styles.restitemcont,
+          windowWidth >= 1050 ? styles.desktopcont : styles.mobilecont,
+        ]}>
         {restaurants.map((restData, index) => (
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('Info', {restData});
             }}
-            style={styles.restaurantcontainer(theme)}
+            style={[
+              styles.restaurantcontainer(theme, windowWidth),
+              windowWidth >= 1050
+                ? styles.desktoprestaurantcontainer
+                : styles.mobilerestaurantcontainer,
+            ]}
             key={index}>
             <RestImage
               source={restData?.photo?.images?.original?.url}
@@ -48,7 +55,7 @@ const RestInfo = ({name, location, rating, theme}) => {
         <Text style={[styles.headertext(theme), styles.restname]}>{name}</Text>
         <Text style={styles.subheadertext(theme)}>{location}</Text>
       </View>
-      <View style={[styles.rowbox, styles.rating, styles.rowbox]}>
+      <View style={[styles.rowbox, styles.rating]}>
         <Text style={[styles.subheadertext(theme), styles.ratingtext]}>
           {rating + ' R'}
         </Text>
@@ -100,25 +107,36 @@ const styles = StyleSheet.create({
   ratingtext: {
     marginRight: 4,
   },
-  desktopcont: {
+  restitemcont: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginHorizontal: '2%',
-    flex: 1,
+  },
+  desktopcont: {
+    marginLeft: '6%',
+    marginRight: 24,
+  },
+  mobilecont: {
+    marginHorizontal: '4%',
   },
   restaurantcontainer: theme => ({
     marginTop: 10,
     padding: 10,
     backgroundColor: theme.cardbackground,
-    width: Platform.OS === 'web' || Platform.OS === 'windows' ? 450 : '100%',
-    marginHorizontal:
-      Platform.OS === 'web' || Platform.OS === 'windows' ? 10 : 0,
   }),
+  mobilerestaurantcontainer: {
+    width: '100%',
+    marginHorizontal: 0,
+  },
+  desktoprestaurantcontainer: {
+    width: 425,
+    marginHorizontal: 5,
+  },
   headertext: theme => ({
     color: theme.cardheadercolor,
   }),
   subheadertext: theme => ({
     color: theme.cardsubheadercolor,
+    flexWrap: 'wrap',
   }),
 });
 

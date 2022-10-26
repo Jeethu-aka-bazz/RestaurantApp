@@ -75,21 +75,28 @@ const MenuItems = ({menuitem, theme, addedItems, setAddedItems}) => {
 
   return (
     <View style={[styles.rowbox, styles.menuitem(theme)]}>
-      <TextComp content={menuitem.name} color={theme.menutextcolor} />
+      <MenuTextComp
+        content={menuitem.name}
+        color={theme.menutextcolor}
+        style={styles.menuitemname}
+      />
       <View style={styles.rowbox}>
-        <TextComp content={menuitem.perprice} color={theme.menutextcolor} />
+        <MenuTextComp
+          content={'₹' + menuitem.perprice}
+          color={theme.menutextcolor}
+        />
         <TouchableOpacity
           style={styles.addbtn}
           onPress={() => {
             addItemToCart(menuitem);
           }}>
-          <TextComp content="A" color={theme.menutextcolor} />
+          <MenuTextComp content="+" color={theme.menutextcolor} />
         </TouchableOpacity>
 
         {quantity && (
           <>
             <View style={styles.addbtn}>
-              <TextComp
+              <MenuTextComp
                 content={quantity?.quantity || 1}
                 color={theme.menutextcolor}
               />
@@ -99,7 +106,7 @@ const MenuItems = ({menuitem, theme, addedItems, setAddedItems}) => {
               onPress={() => {
                 removeItemFromCart(menuitem);
               }}>
-              <TextComp content={'-'} color={theme.menutextcolor} />
+              <MenuTextComp content={'-'} color={theme.menutextcolor} />
             </TouchableOpacity>
           </>
         )}
@@ -108,8 +115,10 @@ const MenuItems = ({menuitem, theme, addedItems, setAddedItems}) => {
   );
 };
 
-const TextComp = ({content, color}) => {
-  return <Text style={styles.contenttext({color: color})}>{content}</Text>;
+const MenuTextComp = ({content, color, style}) => {
+  return (
+    <Text style={[styles.contenttext({color: color}), style]}>{content}</Text>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -136,7 +145,11 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 10,
     backgroundColor: theme.menubackground,
+    marginHorizontal: 10,
   }),
+  menuitemname: {
+    marginRight: 30,
+  },
 });
 
 export default MenuItems;

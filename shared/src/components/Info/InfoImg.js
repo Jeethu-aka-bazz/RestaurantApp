@@ -1,9 +1,17 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
 import store from '../../store/store';
 
 const InfoImg = ({photosource, navigation}) => {
   const theme = store.getState().theme;
+  const {width: windowWidth} = useWindowDimensions();
   return (
     <View style={styles.imgbox}>
       <TouchableOpacity
@@ -17,7 +25,10 @@ const InfoImg = ({photosource, navigation}) => {
         source={{
           uri: photosource,
         }}
-        style={styles.imgstyle}
+        style={[
+          styles.imgstyle,
+          windowWidth >= 550 ? styles.imgstyledesktop : styles.imgstylemobile,
+        ]}
       />
     </View>
   );
@@ -31,9 +42,14 @@ const styles = StyleSheet.create({
   },
   imgstyle: {
     width: '100%',
-    height: 180,
     position: 'relative',
     borderRadius: 10,
+  },
+  imgstylemobile: {
+    height: 180,
+  },
+  imgstyledesktop: {
+    height: 400,
   },
   gobackstyle: {
     width: 70,

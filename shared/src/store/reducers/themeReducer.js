@@ -16,6 +16,8 @@ const initialState = {
 
   buttonstext: '#000',
   buttonsbackground: '#fff',
+
+  cartbackgroundcolor: '#666',
 };
 
 export default function themeReducer(state = initialState, action) {
@@ -38,6 +40,8 @@ export default function themeReducer(state = initialState, action) {
 
       buttonstext: '#fff',
       buttonsbackground: '#000',
+
+      cartbackgroundcolor: '#bbb',
     };
   } else if (action.type === 'changeDarkTheme') {
     return {
@@ -58,6 +62,8 @@ export default function themeReducer(state = initialState, action) {
 
       buttonsbackground: '#fff',
       buttonstext: '#000',
+
+      cartbackgroundcolor: '#666',
     };
   }
   return state;

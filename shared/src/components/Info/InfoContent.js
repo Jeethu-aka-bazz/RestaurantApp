@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React from 'react';
+import {StyleSheet, Text, View, useWindowDimensions} from 'react-native';
 import store from '../../store/store';
 import MenuItems from './MenuItems';
 
@@ -15,15 +15,21 @@ const InfoContent = ({
   setAddedItems,
 }) => {
   const theme = store.getState().theme;
+  const {width: windowWidth} = useWindowDimensions();
   return (
-    <View style={styles.infocard(theme)}>
+    <View
+      style={
+        windowWidth >= 550 ? styles.infocarddesktop : styles.infocard(theme)
+      }>
       <Text style={styles.header(theme)}>{restaurantname}</Text>
       <Text style={styles.contenttext({color: theme.cardsubheadercolor})}>
         {cuisine?.map(e => e.name + ', ')}
       </Text>
       <ContactText address={address} ratings={ratings} theme={theme} />
       <Price theme={theme} price={price} currency={currency} />
+      <Line theme={theme} />
       <Menu
+        windowWidth={windowWidth}
         theme={theme}
         menuitems={menuitems}
         addedItems={addedItems}
@@ -33,16 +39,28 @@ const InfoContent = ({
   );
 };
 
-const Menu = ({menuitems, theme, addedItems, setAddedItems}) => {
+const Line = ({theme}) => {
+  return (
+    <View style={[styles.line, {backgroundColor: theme.buttonsbackground}]} />
+  );
+};
+
+const Menu = ({menuitems, theme, addedItems, setAddedItems, windowWidth}) => {
   return (
     <View>
-      <Text style={[styles.header(theme)]}>Menu</Text>
+      <Text style={[styles.header(theme), styles.menuHeader]}>Menu</Text>
       {menuitems?.length === 0 || menuitems === undefined ? (
         <Text style={[{color: theme.cardsubheadercolor}]}>
           no menu for this resturant
         </Text>
       ) : (
-        <View>
+        <View
+          style={[
+            windowWidth >= 670
+              ? styles.menuitemcontdesktop
+              : styles.menuitemcontmobile,
+            styles.menuitemcont,
+          ]}>
           {menuitems?.map(menuitem => (
             <MenuItems
               theme={theme}
@@ -86,9 +104,13 @@ const styles = StyleSheet.create({
 
   infocard: theme => ({
     backgroundColor: theme.cardbackground,
-    padding: 15,
+    padding: 20,
     borderRadius: 15,
   }),
+  infocarddesktop: {
+    paddingHorizontal: 90,
+    paddingVertical: 80,
+  },
   header: theme => ({
     fontWeight: '700',
     fontSize: 40,
@@ -110,6 +132,27 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: theme.cardsubheadercolor,
   }),
+  menuitemcontmobile: {
+    flexDirection: 'column',
+  },
+  menuitemcontdesktop: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  menuitemcont: {
+    justifyContent: 'center',
+  },
+  menuHeader: {
+    alignSelf: 'center',
+    marginTop: 5,
+    marginBottom: 25,
+  },
+  line: {
+    width: '50%',
+    height: 4,
+    alignSelf: 'center',
+    margin: 30,
+  },
 });
 
 export default InfoContent;

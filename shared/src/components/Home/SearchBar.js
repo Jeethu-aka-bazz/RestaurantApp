@@ -123,6 +123,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
+    marginHorizontal: '5%',
     backgroundColor: theme.searchbarbackground,
   }),
   searchlisttext: theme => ({
@@ -135,6 +136,7 @@ const styles = StyleSheet.create({
   searchboxstyle: {
     marginTop: 15,
     flexDirection: 'row',
+    marginHorizontal: '5%',
   },
 });
 

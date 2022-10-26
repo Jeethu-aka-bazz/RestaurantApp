@@ -6,14 +6,26 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 import store from '../store/store';
 
 const ListDrawerComp = ({showDrawer, setShowDrawer, title, items}) => {
   const theme = store.getState().theme;
+  const {width: windowWidth} = useWindowDimensions();
   return (
-    <Modal visible={showDrawer} transparent animationType="slide">
-      <ScrollView style={styles.cartDrawer(theme)}>
+    <Modal
+      visible={showDrawer}
+      transparent
+      animationType="slide"
+      onRequestClose={() => {
+        setShowDrawer(!showDrawer);
+      }}>
+      <ScrollView
+        style={[
+          styles.cartDrawer(theme),
+          windowWidth >= 550 && styles.cardDrawerdesktop,
+        ]}>
         <View>
           <TouchableOpacity
             onPress={() => {
@@ -72,11 +84,11 @@ const CartItems = ({items, theme}) => {
               {listingitem?.name}
             </Text>
             <Text style={styles.cartitem(theme)}>
-              {listingitem?.perprice + ' R'}
+              {'₹ ' + listingitem?.perprice}
             </Text>
             <Text style={styles.cartitem(theme)}>{listingitem?.quantity}</Text>
             <Text style={styles.cartitem(theme)}>
-              {listingitem?.perprice * listingitem?.quantity + ' R'}
+              {'₹' + listingitem?.perprice * listingitem?.quantity}
             </Text>
           </View>
         );
@@ -86,7 +98,7 @@ const CartItems = ({items, theme}) => {
           Grand Total
         </Text>
         <Text style={styles.gobacktext(theme.cardheadercolor)}>
-          {'R ' + getTotal() + '/-'}
+          {'₹ ' + getTotal() + '/-'}
         </Text>
       </View>
     </>
@@ -129,8 +141,12 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    backgroundColor: theme.pagebackground,
+    backgroundColor: theme.cartbackgroundcolor,
   }),
+  cardDrawerdesktop: {
+    width: 550,
+    alignSelf: 'flex-end',
+  },
   gobacktext: color => ({
     fontSize: 18,
     fontWeight: '600',

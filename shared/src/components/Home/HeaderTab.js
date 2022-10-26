@@ -6,22 +6,24 @@ const HeaderTab = ({theme, setTheme, setShowCartDraw, cartCount}) => {
   const [active, setActive] = useState('Dark');
   return (
     <View style={[styles.rowStyle, styles.HeaderTab]}>
+      <View>
+        <Text style={[styles.carttext(theme), styles.logostyle]}>RESTAWAY</Text>
+      </View>
       <View style={[styles.rowStyle]}>
         <ChangeThemeButton
           title="Dark"
           active={active}
           setActive={setActive}
-          theme={theme}
           setTheme={setTheme}
         />
         <ChangeThemeButton
           title="Light"
           active={active}
           setActive={setActive}
-          theme={theme}
           setTheme={setTheme}
         />
       </View>
+
       <TouchableOpacity
         style={[styles.gotocartstyle, styles.rowStyle]}
         onPress={() => {
@@ -38,7 +40,7 @@ const HeaderTab = ({theme, setTheme, setShowCartDraw, cartCount}) => {
   );
 };
 
-const ChangeThemeButton = ({title, active, setActive, theme, setTheme}) => {
+const ChangeThemeButton = ({title, active, setActive, setTheme}) => {
   const changeDark = () => {
     store.dispatch({type: 'changeDarkTheme'});
     setTheme(store.getState().theme);
@@ -90,7 +92,6 @@ const styles = StyleSheet.create({
   },
   HeaderTab: {
     marginTop: 10,
-    marginLeft: 70,
     justifyContent: 'space-evenly',
   },
   activeButtonStyle: {
@@ -98,6 +99,11 @@ const styles = StyleSheet.create({
   },
   inActiveButtonStyles: {
     color: '#000',
+  },
+  logostyle: {
+    alignSelf: 'center',
+    fontWeight: '900',
+    fontSize: 18,
   },
   cartcount: theme => ({
     backgroundColor: '#abc6',
