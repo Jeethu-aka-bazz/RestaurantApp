@@ -1,14 +1,15 @@
+import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import RootNavigation from './navigation/navigation';
 
 const App = () => {
   return (
     <>
-      <RootNavigation />
+      <NavigationContainer>
+        <RootNavigation />
+      </NavigationContainer>
     </>
   );
 };
 
 export default App;
-
-// t's using tools called Ecamm and Screenbrush

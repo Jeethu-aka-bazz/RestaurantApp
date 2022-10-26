@@ -18,7 +18,7 @@ module.exports = {
     rules: [
       {
         test: /\.(tsx|ts|jsx|js|mjs)$/,
-        // exclude: /node_modules/,
+        exclude: /node_modules/,
         loader: 'babel-loader',
         options: {
           presets: ['@babel/env', '@babel/preset-react'],
@@ -43,16 +43,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
   ],
   resolve: {
-    extensions: [
-      '.web.tsx',
-      '.web.ts',
-      '.tsx',
-      '.ts',
-      '.web.jsx',
-      '.web.js',
-      '.jsx',
-      '.js',
-    ], // read files in fillowing order
+    extensions: ['.web.jsx', '.web.js', '.jsx', '.js'],
     alias: Object.assign({
       'react-native$': 'react-native-web',
     }),

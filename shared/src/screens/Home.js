@@ -10,8 +10,10 @@ import {citysList} from '../../apiresponces/citylistApiRes';
 import ListDrawerComp from '../components/ListDrawerComp';
 import ScreenContainer from '../components/ScreenContainer';
 import HeaderTabContainer from '../components/Home/HeaderTabContainer';
+import { useNavigation } from '@react-navigation/native';
 
-const Home = ({navigation}) => {
+const Home = () => {
+  const navigation = useNavigation()
   const [restaurants, setRestaurants] = useState(restaurantsList);
   const [theme, setTheme] = useState(store.getState().theme);
   const [cityname, setCityname] = useState('');
@@ -24,7 +26,7 @@ const Home = ({navigation}) => {
   const cartitems = store.getState().cartitems;
 
   useEffect(() => {
-    navigation.addListener('focus', () => {
+    navigation?.addListener('focus', () => {
       setCartCount(store.getState().cartitems.length);
     });
   }, [navigation]);
@@ -86,13 +88,13 @@ const Home = ({navigation}) => {
           restaurantApiCall={restaurantApiCall}
         />
       </HeaderTabContainer>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <>
         <RestItems
           navigation={navigation}
           restaurants={restaurants}
           theme={theme}
         />
-      </ScrollView>
+      </>
       <ListDrawerComp
         showDrawer={showCartDraw}
         setShowDrawer={setShowCartDraw}
